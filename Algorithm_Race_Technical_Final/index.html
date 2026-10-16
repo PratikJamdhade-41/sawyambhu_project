@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b14">
+  <title>Algorithm Race — Visualize. Compare. Understand.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Algorithm Race home">
+      <span class="brand-mark"><span></span><span></span><span></span><span></span></span>
+      <span>algorithm<span class="brand-accent">race</span><small>VISUAL LEARNING LAB</small></span>
+    </a>
+    <div class="topbar-right"><span class="live-dot"></span><span class="top-status">INTERACTIVE
+        PLAYGROUND</span><button id="helpBtn" class="icon-btn" aria-label="Show instructions"
+        title="How to use">?</button></div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> ALGORITHM VISUALIZER / 01</div>
+        <h1>Make algorithms<br><span class="gradient-text">race in real time.</span></h1>
+        <p>Watch two sorting algorithms tackle the same data. Explore every comparison, follow each move, and discover
+          what makes an algorithm fast.</p>
+      </div>
+      <div class="hero-orbit" aria-hidden="true">
+        <div class="orbit orbit-a"></div>
+        <div class="orbit orbit-b"></div>
+        <div class="orbit-core"><span>↗</span></div>
+        <div class="orbit-tag tag-top">O(n log n)</div>
+        <div class="orbit-tag tag-bottom">LIVE COMPARISON</div>
+      </div>
+    </section>
+
+    <section class="control-deck panel">
+      <div class="deck-head">
+        <div><span class="section-kicker">RACE CONFIGURATION</span>
+          <h2>Set up your race</h2>
+        </div><span class="dataset-pill"><span class="live-dot"></span> ONE SHARED DATASET</span>
+      </div>
+      <div class="config-grid">
+        <label class="field"><span>RACER A</span><select id="algoA">
+            <option value="bubble">Bubble Sort</option>
+            <option value="insertion">Insertion Sort</option>
+            <option value="merge">Merge Sort</option>
+            <option value="quick">Quick Sort</option>
+            <option value="selection">Selection Sort</option>
+            <option value="heap">Heap Sort</option>
+          </select><small id="complexityA">Time: O(n²) · Space: O(1)</small></label>
+        <div class="versus">VS</div>
+        <label class="field"><span>RACER B</span><select id="algoB">
+            <option value="merge" selected>Merge Sort</option>
+            <option value="quick">Quick Sort</option>
+            <option value="insertion">Insertion Sort</option>
+            <option value="bubble">Bubble Sort</option>
+            <option value="selection">Selection Sort</option>
+            <option value="heap">Heap Sort</option>
+          </select><small id="complexityB">Time: O(n log n) · Space: O(n)</small></label>
+        <label class="field size-field"><span>ARRAY SIZE <b id="sizeValue">40</b></span><input id="arraySize"
+            type="range" min="10" max="100" value="40"><small>10–100 values</small></label>
+        <label class="field"><span>INPUT PATTERN</span><select id="inputPattern">
+            <option value="random">Random</option>
+            <option value="nearly">Nearly sorted</option>
+            <option value="sorted">Already sorted</option>
+            <option value="reversed">Reverse sorted</option>
+            <option value="few">Few unique values</option>
+          </select><small>Same pattern for both racers</small></label>
+        <label class="field"><span>ANIMATION SPEED <b id="speedValue">Medium</b></span><input id="speed" type="range"
+            min="1" max="5" value="3"><small>Slow motion to turbo</small></label>
+        <div class="dataset-actions"><button id="newData" class="button button-secondary"><span>⟳</span> New
+            dataset</button><button id="resetBtn" class="button button-secondary">Reset race</button><button
+            id="benchmarkBtn" class="button button-secondary">⚡ Benchmark</button></div>
+      </div>
+    </section>
+
+    <section class="race-section">
+      <div class="section-heading">
+        <div><span class="section-kicker">LIVE VISUALIZATION</span>
+          <h2>The race arena</h2>
+        </div>
+        <div class="legend"><span><i class="legend-dot compare"></i> Comparing</span><span><i
+              class="legend-dot swap"></i> Moving / swapping</span><span><i class="legend-dot sorted"></i> Sorted</span>
+        </div>
+      </div>
+      <div class="race-grid">
+        <article class="racer-card racer-a">
+          <div class="racer-head">
+            <div class="racer-ident"><span class="racer-symbol">A</span>
+              <div>
+                <h3 id="titleA">Bubble Sort</h3>
+                <p id="subA">Simple · In-place</p>
+              </div>
+            </div><span class="racer-state" id="stateA">READY</span>
+          </div>
+          <div class="chart-wrap">
+            <div class="axis-label">VALUE</div>
+            <div class="bars" id="barsA" aria-label="Bubble sort array visualization"></div>
+            <div class="chart-foot"><span>INDEX 0</span><span id="rangeA">40 ELEMENTS</span><span id="lastA">INDEX
+                39</span></div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat"><span>COMPARISONS</span><strong id="comparisonsA">0</strong></div>
+            <div class="stat"><span>WRITES / SWAPS</span><strong id="swapsA">0</strong></div>
+            <div class="stat"><span>EVENTS</span><strong id="stepsA">0</strong></div>
+          </div>
+          <div class="elapsed-line"><span>ANIMATION ELAPSED</span><strong id="elapsedA">0.000 s</strong></div>
+          <div class="racer-bottom"><span class="complexity-chip" id="chipA">O(n²)</span><span id="progressA">0%
+              complete</span></div>
+          <div class="progress-track">
+            <div id="progressBarA"></div>
+          </div>
+        </article>
+        <article class="racer-card racer-b">
+          <div class="racer-head">
+            <div class="racer-ident"><span class="racer-symbol">B</span>
+              <div>
+                <h3 id="titleB">Merge Sort</h3>
+                <p id="subB">Divide & conquer</p>
+              </div>
+            </div><span class="racer-state" id="stateB">READY</span>
+          </div>
+          <div class="chart-wrap">
+            <div class="axis-label">VALUE</div>
+            <div class="bars" id="barsB" aria-label="Merge sort array visualization"></div>
+            <div class="chart-foot"><span>INDEX 0</span><span id="rangeB">40 ELEMENTS</span><span id="lastB">INDEX
+                39</span></div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat"><span>COMPARISONS</span><strong id="comparisonsB">0</strong></div>
+            <div class="stat"><span>WRITES / SWAPS</span><strong id="swapsB">0</strong></div>
+            <div class="stat"><span>EVENTS</span><strong id="stepsB">0</strong></div>
+          </div>
+          <div class="elapsed-line"><span>ANIMATION ELAPSED</span><strong id="elapsedB">0.000 s</strong></div>
+          <div class="racer-bottom"><span class="complexity-chip" id="chipB">O(n log n)</span><span id="progressB">0%
+              complete</span></div>
+          <div class="progress-track">
+            <div id="progressBarB"></div>
+          </div>
+        </article>
+      </div>
+      <div class="playback panel">
+        <div class="playback-info"><span class="section-kicker">PLAYBACK CONTROL</span><strong id="playbackStatus">Ready
+            when you are.</strong><small id="playbackHint">Press play to start both racers together.</small></div>
+        <div class="playback-buttons"><button id="playBtn" class="button button-primary"><span
+              class="play-icon">▶</span> Start race</button><button id="pauseBtn" class="button button-secondary"
+            disabled>Ⅱ Pause</button><button id="stepBtn" class="button button-secondary">Step ↦</button><button
+            id="restartBtn" class="button button-secondary">↺ Restart</button></div>
+      </div>
+      <div id="winnerBanner" class="winner-banner hidden" role="status"><span class="winner-icon">✦</span>
+        <div><strong id="winnerTitle">Race complete</strong>
+          <p id="winnerText"></p>
+        </div><button id="dismissWinner" class="icon-btn" aria-label="Dismiss">×</button>
+      </div>
+    </section>
+
+    <section class="insights-grid">
+      <article class="insight-card panel">
+        <div class="insight-top"><span class="section-kicker">PERFORMANCE SNAPSHOT</span><span
+            class="insight-icon">↗</span></div>
+        <h2>Numbers tell a story.</h2>
+        <p>Watch the operation counters to see how each approach handles the same input.</p>
+        <div class="metric-compare">
+          <div><span id="metricLabelA">Bubble Sort</span><strong id="metricStepsA">0 <small>steps</small></strong>
+            <div class="mini-track"><i id="metricBarA"></i></div>
+          </div>
+          <div><span id="metricLabelB">Merge Sort</span><strong id="metricStepsB">0 <small>steps</small></strong>
+            <div class="mini-track"><i id="metricBarB"></i></div>
+          </div>
+        </div><small class="muted-note">Fewer counted operations can be useful, but actual runtime also depends on
+          implementation and hardware.</small>
+      </article>
+      <article class="insight-card panel">
+        <div class="insight-top"><span class="section-kicker">ALGORITHM FIELD GUIDE</span><span
+            class="insight-icon">⌘</span></div>
+        <h2>Know your racers.</h2>
+        <p id="guideDescription">Choose an algorithm to explore its strategy and complexity.</p>
+        <div class="guide-row"><span>TIME COMPLEXITY</span><strong id="guideTime">—</strong></div>
+        <div class="guide-row"><span>SPACE COMPLEXITY</span><strong id="guideSpace">—</strong></div>
+        <div class="guide-row"><span>STRATEGY</span><strong id="guideStrategy">—</strong></div>
+      </article>
+    </section>
+
+
+    <section class="technical-lab">
+      <div class="section-heading">
+        <div><span class="section-kicker">DEVELOPER INSIGHTS</span>
+          <h2>Algorithm telemetry</h2>
+        </div><span class="dataset-pill">LIVE METRICS</span>
+      </div>
+      <div class="telemetry-grid">
+        <article class="panel telemetry-card">
+          <span class="section-kicker">OPERATION BREAKDOWN</span>
+          <h3>Work performed</h3>
+          <p>Compare operation counts across the current run.</p>
+          <div class="telemetry-row"><span>Racer A comparisons</span><strong id="telemetryCompA">0</strong></div>
+          <div class="telemetry-row"><span>Racer B comparisons</span><strong id="telemetryCompB">0</strong></div>
+          <div class="telemetry-row"><span>Racer A writes / swaps</span><strong id="telemetryMovesA">0</strong></div>
+          <div class="telemetry-row"><span>Racer B writes / swaps</span><strong id="telemetryMovesB">0</strong></div>
+        </article>
+        <article class="panel telemetry-card">
+          <span class="section-kicker">COMPLEXITY EXPLORER</span>
+          <h3>What does Big-O mean?</h3>
+          <p>Growth estimates describe how work scales as input size increases; they are not direct runtime predictions.
+          </p>
+          <div class="growth-list">
+            <div><span class="growth-label"><i class="growth-dot linear"></i>Linear</span><code>O(n)</code><span
+                class="growth-desc">Growth proportional to input size</span></div>
+            <div><span class="growth-label"><i
+                  class="growth-dot log"></i>Linearithmic</span><code>O(n log n)</code><span class="growth-desc">Common
+                efficient comparison sorting</span></div>
+            <div><span class="growth-label"><i class="growth-dot quadratic"></i>Quadratic</span><code>O(n²)</code><span
+                class="growth-desc">Nested comparisons can grow quickly</span></div>
+          </div>
+        </article>
+      </div>
+      <div class="panel execution-panel">
+        <div><span class="section-kicker">EXECUTION TRACE</span>
+          <h3>Latest algorithm events</h3>
+          <p>Step through the race to inspect the most recent operation.</p>
+        </div>
+        <div class="trace-grid">
+          <div><span>RACER A</span><strong id="traceA">Waiting for first operation…</strong></div>
+          <div><span>RACER B</span><strong id="traceB">Waiting for first operation…</strong></div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="benchmark-section panel" id="benchmarkSection">
+      <div class="section-heading">
+        <div><span class="section-kicker">FAST MODE · SYNCHRONOUS MICRO-BENCHMARK</span>
+          <h2>Benchmark lab</h2>
+        </div><span class="dataset-pill">MEASURED LOCALLY</span>
+      </div>
+      <p class="benchmark-intro">Runs each selected algorithm directly on a fresh copy of the same input and measures
+        elapsed browser time. Results are noisy on small arrays and depend on the device/browser; use operation counts
+        to understand the algorithm.</p>
+      <div class="benchmark-results">
+        <article><span id="benchNameA">Racer A</span><strong id="benchTimeA">—</strong><small id="benchOpsA">Run
+            benchmark to compare</small>
+          <div class="bench-track"><i id="benchBarA"></i></div>
+        </article>
+        <article><span id="benchNameB">Racer B</span><strong id="benchTimeB">—</strong><small id="benchOpsB">Run
+            benchmark to compare</small>
+          <div class="bench-track"><i id="benchBarB"></i></div>
+        </article>
+      </div>
+      <div id="benchmarkSummary" class="benchmark-summary" role="status">No benchmark run yet.</div>
+    </section>
+
+    <section class="learning-lab panel">
+      <div class="section-heading">
+        <div><span class="section-kicker">KNOWLEDGE CHECK</span>
+          <h2>Algorithm checkpoint</h2>
+        </div><span class="dataset-pill">LEARN BY DOING</span>
+      </div>
+      <p id="quizQuestion">Which complexity usually describes Merge Sort's time in the worst case?</p>
+      <div class="quiz-options"><button class="button button-secondary quiz-option" data-answer="a">A ·
+          O(n)</button><button class="button button-secondary quiz-option" data-answer="b">B · O(n log
+          n)</button><button class="button button-secondary quiz-option" data-answer="c">C · O(n²)</button><button
+          class="button button-secondary quiz-option" data-answer="d">D · O(2ⁿ)</button></div>
+      <div id="quizFeedback" class="quiz-feedback" aria-live="polite">Choose an answer to check your understanding.
+      </div>
+      <button id="nextQuiz" class="button button-secondary">Next question ↗</button>
+    </section>
+
+    <footer>
+      <div class="footer-brand"><span
+          class="brand-mark mini"><span></span><span></span><span></span><span></span></span> ALGORITHM RACE</div>
+      <span>Built to make computer science visible.</span><span>HACK THRONE · LEARN BY DOING</span>
+    </footer>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <dialog id="helpDialog" class="help-dialog">
+    <div class="dialog-head">
+      <div><span class="section-kicker">QUICK GUIDE</span>
+        <h2>How to race</h2>
+      </div><button id="closeHelp" class="icon-btn" aria-label="Close">×</button>
+    </div>
+    <ol>
+      <li>Choose a sorting algorithm for racer A and B (six algorithms are available).</li>
+      <li>Set the array size, then create a new shared dataset.</li>
+      <li>Press <b>Start race</b> to animate both algorithms together.</li>
+      <li>Use <b>Pause</b> or <b>Step</b> to inspect individual operations.</li>
+      <li>Compare counters, use the Benchmark Lab for local timing, and try the quiz.</li>
+    </ol>
+    <p class="dialog-note">Tip: Try Bubble Sort vs Merge Sort with 100 values to make the difference more visible.</p>
+  </dialog>
+  <script src="assets/js/script.js"></script>
+</body>
+
+</html>
